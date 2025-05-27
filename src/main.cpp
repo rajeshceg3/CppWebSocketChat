@@ -1,84 +1,41 @@
+#include "ChatClient.hpp" // Include the new header
 #include <iostream>
 #include <string>
-#include <boost/asio.hpp>
-#include <boost/beast/core.hpp>
-#include <boost/beast/websocket.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/format.hpp>
-
-namespace beast = boost::beast;
-namespace http = beast::http;
-namespace websocket = beast::websocket;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
-
-// Chat client implementation using websocket and boost asio
-class ChatClient {
-public:
-    ChatClient(std::string const& host, std::string const& port)
-        : io_context(1),
-          ws(io_context, websocket::stream_base::version::latest)
-    {
-        // Resolve the host and port
-        auto const address = net::ip::make_address(host);
-        auto const endpoint = tcp::endpoint(address, std::stoi(port));
-
-        // Connect to the server
-        connect(ws.next_layer(), endpoint);
-
-        // Set up the websocket connection
-        ws.set_option(websocket::stream_base::decorator(
-            websocket::stream_base::decorator::token_compression(websocket::stream_base::decorator::token_compression::enabled)
-        ));
-        ws.handshake(host, "/");
-    }
-
-    // Send a message to the chat server
-    void send_message(const std::string& message) {
-        ws.write(net::buffer(message));
-    }
-
-    // Receive a message from the chat server
-    std::string receive_message() {
-        beast::flat_buffer buffer;
-        ws.read(buffer);
-        return boost::beast::buffers_to_string(buffer.data());
-    }
-
-    // Run the client loop
-    void run() {
-        while (true) {
-            std::cout << "> ";
-            std::string message;
-            std::getline(std::cin, message);
-
-            if (message == "/quit") {
-                break;
-            }
-
-            send_message(message);
-            std::cout << "Server: " << receive_message() << std::endl;
-        }
-
-        // Close the websocket connection
-        ws.close(websocket::close_code::normal);
-    }
-
-private:
-    net::io_context io_context;
-    websocket::stream<tcp::socket> ws;
-};
+// Other necessary includes for main.cpp, if any, but most should be in ChatClient.hpp/cpp
 
 int main() {
-    std::string host = "localhost";
-    std::string port = "8080"; // Replace with your server's port
+    // Default to localhost and port 8080, but could be configurable
+    // For example, by command-line arguments or user input.
+    std::string host = "127.0.0.1"; // Using 127.0.0.1 explicitly
+    std::string port = "8080";
 
-    ChatClient client(host, port);
+    // Example: Allow overriding host and port from command line arguments
+    // if (argc == 3) {
+    //     host = argv[1];
+    //     port = argv[2];
+    // } else if (argc != 1) {
+    //     std::cerr << "Usage: " << argv[0] << " [host port]" << std::endl;
+    //     return 1;
+    // }
 
-    std::cout << "Connected to chat server!" << std::endl;
-    client.run();
+    try {
+        ChatClient client(host, port);
+
+        if (client.is_connected()) {
+            // The run loop now prints "Chat client started..." or similar
+            client.run(std::cin, std::cout); // Pass std::cin and std::cout
+        } else {
+            std::cerr << "Failed to connect to the chat server at " << host << ":" << port << ". Exiting." << std::endl;
+            return 1; // Indicate failure
+        }
+
+    } catch (std::exception const& e) {
+        std::cerr << "Unhandled exception in main: " << e.what() << std::endl;
+        return 1; // Indicate failure
+    } catch (...) {
+        std::cerr << "Unknown unhandled exception in main." << std::endl;
+        return 1; // Indicate failure
+    }
 
     return 0;
 }
