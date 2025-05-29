@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.0.0)
 project (main CXX)
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-SET(CMAKE_CXX_COMPILER "clang++-18")
+# SET(CMAKE_CXX_COMPILER "clang++-18") # Use system default or user-specified compiler
 SET(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES  ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
@@ -26,10 +26,11 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(main ${MAIN_SRC} ${CLIENT_SRC}) # main uses ChatClient.cpp
+target_link_libraries(main PRIVATE pthread)
 
 # Test executable
 add_executable(chat_client_tests tests/test_chat_client.cpp ${CLIENT_SRC})
-target_link_libraries(chat_client_tests PRIVATE gtest_main)
+target_link_libraries(chat_client_tests PRIVATE gtest_main gmock)
 
 include(GoogleTest)
 gtest_discover_tests(chat_client_tests)

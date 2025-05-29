@@ -36,7 +36,7 @@ public:
     // BoostWebSocketStream is concrete, so it can expose this.
 
 private:
-    websocket::stream<tcp::socket> ws_;
+    beast::websocket::stream<tcp::socket> ws_;
 };
 
 #endif // BOOSTWEBSOCKETSTREAM_HPP
