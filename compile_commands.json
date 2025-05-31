@@ -1,7 +1,52 @@
 [
 {
-  "directory": "/tmp/build",
-  "command": "clang++  -I/home/runner/CPlusPlus-CMake-Project/include -isystem /nix/store/ghvw9lxj8wy3qjip2jv6qsqwvqh6r86j-gdb-12.1/include -isystem /nix/store/wnjh1hzv9vqyyh46m9x2h26idib5kbx8-compiler-rt-libc-12.0.1-dev/include -isystem /nix/store/1gf2flfqnpqbr1b4p4qz2f72y42bs56r-gcc-11.3.0/include/c++/11.3.0 -isystem /nix/store/1gf2flfqnpqbr1b4p4qz2f72y42bs56r-gcc-11.3.0/include/c++/11.3.0/x86_64-unknown-linux-gnu -isystem /nix/store/1gf2flfqnpqbr1b4p4qz2f72y42bs56r-gcc-11.3.0/include/c++/11.3.0/backward -isystem /nix/store/1gf2flfqnpqbr1b4p4qz2f72y42bs56r-gcc-11.3.0/lib/gcc/x86_64-unknown-linux-gnu/11.3.0/include -isystem /nix/store/1gf2flfqnpqbr1b4p4qz2f72y42bs56r-gcc-11.3.0/include -isystem /nix/store/1gf2flfqnpqbr1b4p4qz2f72y42bs56r-gcc-11.3.0/lib/gcc/x86_64-unknown-linux-gnu/11.3.0/include-fixed -isystem /nix/store/4pqv2mwdn88h7xvsm7a5zplrd8sxzvw0-glibc-2.35-163-dev/include  -o CMakeFiles/main.dir/src/main.cpp.o -c /home/runner/CPlusPlus-CMake-Project/src/main.cpp",
-  "file": "/home/runner/CPlusPlus-CMake-Project/src/main.cpp"
+  "directory": "/workspaces/CppWebSocketChat/build",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -o CMakeFiles/chat_client_tests.dir/tests/test_chat_client.cpp.o -c /workspaces/CppWebSocketChat/tests/test_chat_client.cpp",
+  "file": "/workspaces/CppWebSocketChat/tests/test_chat_client.cpp"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -o CMakeFiles/chat_client_tests.dir/src/ChatClient.cpp.o -c /workspaces/CppWebSocketChat/src/ChatClient.cpp",
+  "file": "/workspaces/CppWebSocketChat/src/ChatClient.cpp"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -o CMakeFiles/chat_client_tests.dir/src/BoostWebSocketStream.cpp.o -c /workspaces/CppWebSocketChat/src/BoostWebSocketStream.cpp",
+  "file": "/workspaces/CppWebSocketChat/src/BoostWebSocketStream.cpp"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -o CMakeFiles/main.dir/src/main.cpp.o -c /workspaces/CppWebSocketChat/src/main.cpp",
+  "file": "/workspaces/CppWebSocketChat/src/main.cpp"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -o CMakeFiles/main.dir/src/ChatClient.cpp.o -c /workspaces/CppWebSocketChat/src/ChatClient.cpp",
+  "file": "/workspaces/CppWebSocketChat/src/ChatClient.cpp"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -o CMakeFiles/main.dir/src/BoostWebSocketStream.cpp.o -c /workspaces/CppWebSocketChat/src/BoostWebSocketStream.cpp",
+  "file": "/workspaces/CppWebSocketChat/src/BoostWebSocketStream.cpp"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build/_deps/googletest-build/googlemock",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/src/gmock_main.cc",
+  "file": "/workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/src/gmock_main.cc"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build/_deps/googletest-build/googlemock",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -I/workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/include -I/workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/src/gmock-all.cc",
+  "file": "/workspaces/CppWebSocketChat/build/_deps/googletest-src/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build/_deps/googletest-build/googletest",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -isystem /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/src/gtest_main.cc",
+  "file": "/workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/src/gtest_main.cc"
+},
+{
+  "directory": "/workspaces/CppWebSocketChat/build/_deps/googletest-build/googletest",
+  "command": "/usr/bin/c++   -I/workspaces/CppWebSocketChat/include -I/workspaces/CppWebSocketChat/src -I/workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/include -I/workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest -isystem /usr/include/c++/9 -isystem /usr/include/x86_64-linux-gnu/c++/9 -isystem /usr/include/c++/9/backward -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include    -Wall -Wshadow -Wno-error=dangling-else -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/src/gtest-all.cc",
+  "file": "/workspaces/CppWebSocketChat/build/_deps/googletest-src/googletest/src/gtest-all.cc"
 }
 ]

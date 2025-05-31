@@ -1,0 +1,33 @@
+name: C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build_and_test: # Renamed job for clarity
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies (Boost, CMake)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libboost-dev cmake
+
+    - name: Configure CMake
+      # Ensure GTest is fetched and built, tests are enabled
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DENABLE_TESTING=ON # Explicitly enable testing if CMakeLists.txt uses an option
+
+    - name: Build project (including tests)
+      run: |
+        cd build
+        make
+
+    - name: Run tests
+      run: |
+        cd build
+        ./chat_client_tests # Or ctest if configured
