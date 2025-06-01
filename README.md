@@ -50,14 +50,16 @@ A simple command-line chat client using C++ and Boost (Asio/Beast) for WebSocket
     ```bash
     ./main
     ```
-2.  **Configuration:**
-    Currently, the server host and port are hardcoded in `src/main.cpp`:
-    ```cpp
-    std::string host = "localhost";
-    std::string port = "8080"; // Replace with your server's port
+    The client can be run with optional command-line arguments to specify the server host and port:
+    ```bash
+    ./main [host port]
     ```
-    You will need to modify these values and recompile if your server is running on a different address or port.
-3.  **Interacting with the Chat:**
+    - If no arguments are provided, it defaults to connecting to `127.0.0.1` on port `8080`.
+    - For example, to connect to a server at `mychatserver.com` on port `12345`:
+      ```bash
+      ./main mychatserver.com 12345
+      ```
+2.  **Interacting with the Chat:**
     - Once connected, type your message and press Enter to send.
     - Received messages will be displayed with a "Server:" prefix.
     - Type `/quit` and press Enter to disconnect and exit the client.
