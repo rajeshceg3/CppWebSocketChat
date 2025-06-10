@@ -3,6 +3,21 @@
 #include <boost/asio/ip/tcp.hpp>   // For tcp::resolver
 #include <boost/format.hpp> 
 #include <iostream> 
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+
+// Helper function to get current time as a formatted string
+std::string ChatClient::getCurrentTimestamp() {
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+    std::stringstream ss;
+    // std::localtime might not be thread-safe on all platforms. For more robust
+    // applications, consider alternatives or synchronization if this function
+    // could be called from multiple threads concurrently (not an issue for current ChatClient structure).
+    ss << std::put_time(std::localtime(&in_time_t), "[%H:%M:%S]");
+    return ss.str();
+}
 
 // Constructor for production use
 ChatClient::ChatClient(std::string const& host, std::string const& port)
@@ -101,12 +116,12 @@ ChatClient::~ChatClient() {
 
 void ChatClient::log(const std::string& message, bool is_error) {
     // Simple console logging; replace with a more robust logger if needed.
-    // [CLIENT LOG] or [ERROR] prefix helps distinguish.
+    // Logs always go to std::cerr.
     // Consider adding timestamps or thread IDs for more complex scenarios.
     if (is_error) {
-        std::cerr << "[ERROR] ChatClient: " << message << std::endl;
+        std::cerr << "[CLIENT ERROR] ChatClient: " << message << std::endl;
     } else {
-        std::cout << "[CLIENT LOG] ChatClient: " << message << std::endl;
+        std::cerr << "[CLIENT DEBUG] ChatClient: " << message << std::endl;
     }
 }
 
@@ -160,7 +175,8 @@ std::string ChatClient::receive_message() {
         if (ec) {
             log("Error receiving message (read): " + ec.message(), true);
             if (ec == websocket::error::closed) {
-                log("Connection closed by server.", true);
+                // User-facing message "Connection closed by server" is returned by receive_message()
+                // and handled by the run loop. No specific log call here anymore.
                 connected_ = false;
                 return "[Connection closed by server]";
             } else if (ec == beast::error::timeout || ec == net::error::broken_pipe ||
@@ -193,7 +209,7 @@ void ChatClient::run(std::istream& input, std::ostream& output) {
         return;
     }
 
-    output << "Chat client started. Type '/quit' to exit." << std::endl;
+    output << ChatClient::getCurrentTimestamp() << " Chat client started. Type '/quit' to exit." << std::endl;
 
     try {
         while (is_connected()) { 
@@ -201,14 +217,18 @@ void ChatClient::run(std::istream& input, std::ostream& output) {
             std::string message;
             if (!std::getline(input, message)) { 
                 log("Input stream ended or error.", !input.eof()); // Log as error if not EOF
-                if (input.eof()) {
-                    log("EOF detected on input stream.");
+                if (!input.eof()) { // If it's an error, not just EOF
+                    output << ChatClient::getCurrentTimestamp() << " Error: Could not read input. Disconnecting." << std::endl;
+                } else {
+                    // log("EOF detected on input stream."); // Already logged by the previous log call if eof is true
+                    output << ChatClient::getCurrentTimestamp() << " Input stream closed (EOF). Disconnecting." << std::endl;
                 }
                 break; 
             }
 
             if (message == "/quit") {
-                log("User initiated quit.");
+                // User-facing message about quitting is handled by the run loop's exit.
+                // No specific log call here anymore.
                 break;
             }
             
@@ -224,14 +244,14 @@ void ChatClient::run(std::istream& input, std::ostream& output) {
             }
             
             if (!send_message(message)) {
-                // send_message logs its own errors and updates connected_
-                // log("Failed to send message.", true); // Already logged by send_message
-                if(!is_connected()){ // If send_message caused disconnection
-                    log("Connection lost after attempting to send message.", true);
-                    break;
+                // send_message logs its own errors to std::cerr and updates connected_
+                output << ChatClient::getCurrentTimestamp() << " Error: Failed to send message." << std::endl; // User feedback to std::cout
+                if(!is_connected()){
+                    // log("Connection lost after attempting to send message.", true); // Already logged by send_message if it leads to disconnect
+                    output << ChatClient::getCurrentTimestamp() << " Connection lost." << std::endl; // Additional feedback if disconnected
+                    break; // Exit loop if disconnected
                 }
-                // If still connected, could be a non-fatal send error (though our current send_message makes most errors fatal)
-                // Allow user to try again or quit.
+                // If still connected, could be a non-fatal send error. Allow user to try again or quit.
                 continue;
             }
 
@@ -241,7 +261,7 @@ void ChatClient::run(std::istream& input, std::ostream& output) {
             // If receive_message caused disconnection and returned an error string
             if (!is_connected() && 
                 (server_response.rfind("[Error:", 0) == 0 || server_response.rfind("[Connection closed", 0) == 0) ) {
-                output << "Server: " << server_response << std::endl; // Show the error to the user
+                  output << ChatClient::getCurrentTimestamp() << " Server: " << server_response << std::endl; // Show the error to the user
                 log("Connection lost while receiving message or server closed connection.", true);
                 break;
             } else if (!is_connected()) { // If disconnected for other reasons during receive
@@ -249,10 +269,11 @@ void ChatClient::run(std::istream& input, std::ostream& output) {
                  break;
             }
             
-            output << "Server: " << server_response << std::endl;
+            output << ChatClient::getCurrentTimestamp() << " Server: " << server_response << std::endl;
         }
     } catch (std::exception const& e) { // Catch any unexpected exceptions
         log("Unhandled std::exception in run loop: " + std::string(e.what()), true);
+        output << ChatClient::getCurrentTimestamp() << " Error: An unexpected error occurred. Disconnecting." << std::endl;
         connected_ = false; // Ensure disconnected state
     }
 
@@ -267,5 +288,5 @@ void ChatClient::run(std::istream& input, std::ostream& output) {
         }
     }
     // Final message to user's output stream
-    output << "Disconnected." << std::endl;
+    output << ChatClient::getCurrentTimestamp() << " Disconnected." << std::endl;
 }

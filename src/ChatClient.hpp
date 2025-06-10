@@ -26,6 +26,8 @@ public:
     ChatClient(std::unique_ptr<IWebSocketStream> stream_impl, net::io_context& ioc_ref); // Added ioc_ref
     ~ChatClient();
 
+    static std::string getCurrentTimestamp(); // Helper to get formatted current time
+
     bool send_message(const std::string& message);
     std::string receive_message();
     // void run(); // Old signature

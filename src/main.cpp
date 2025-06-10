@@ -17,19 +17,22 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    std::cout << ChatClient::getCurrentTimestamp() << " Attempting to connect to " << host << ":" << port << "..." << std::endl;
+
     try {
         ChatClient client(host, port);
 
         if (client.is_connected()) {
+            std::cout << ChatClient::getCurrentTimestamp() << " Connected to " << host << ":" << port << "." << std::endl;
             // The run loop now prints "Chat client started..." or similar
             client.run(std::cin, std::cout); // Pass std::cin and std::cout
         } else {
-            std::cerr << "Failed to connect to the chat server at " << host << ":" << port << ". Exiting." << std::endl;
+            std::cout << ChatClient::getCurrentTimestamp() << " Failed to connect to the chat server at " << host << ":" << port << ". Exiting." << std::endl;
             return 1; // Indicate failure
         }
 
     } catch (std::exception const& e) {
-        std::cerr << "Unhandled exception in main: " << e.what() << std::endl;
+        std::cerr << ChatClient::getCurrentTimestamp() << " Unhandled exception in main: " << e.what() << std::endl;
         return 1; // Indicate failure
     } catch (...) {
         std::cerr << "Unknown unhandled exception in main." << std::endl;
