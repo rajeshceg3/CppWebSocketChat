@@ -1,0 +1,2 @@
+{"type":"server_client_connected","payload":{"user_id":"sess_5ae52eec368f77e7","message":"A new user has connected.","timestamp":"2025-06-10T16:32:48Z"}}
+> {"type":"server_broadcast_message","payload":{"user_id":"sess_5ae52eec368f77e7","text":"Message from Client B after fix","timestamp":"2025-06-10T16:32:48Z"}}
