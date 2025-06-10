@@ -1,0 +1,2 @@
+{"type":"server_client_connected","payload":{"user_id":"sess_b150a037a247acb9","message":"A new user has connected.","timestamp":"2025-06-10T16:40:26Z"}}
+> {"type":"server_broadcast_message","payload":{"user_id":"sess_b150a037a247acb9","text":"Simulated message during E2E test phase","timestamp":"2025-06-10T16:40:27Z"}}
