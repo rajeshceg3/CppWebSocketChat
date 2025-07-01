@@ -20,7 +20,9 @@ public:
     ChatServer(net::io_context& ioc, const tcp::endpoint& endpoint);
 
     void run();
-    void broadcast(const std::string& message, Session* exclude_session = nullptr);
+    // Overload broadcast: one for system messages, one for user messages that require sender info
+    void broadcast(const std::string& message); // For system messages (no specific sender)
+    void broadcast(const std::string& message, std::shared_ptr<Session> sender_session); // For user messages
     void on_client_connect(std::shared_ptr<Session> session);
     void on_client_disconnect(std::shared_ptr<Session> session);
 

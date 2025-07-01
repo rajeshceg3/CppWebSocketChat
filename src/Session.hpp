@@ -21,10 +21,13 @@ class Session : public std::enable_shared_from_this<Session> {
 public:
     // Constructor now takes io_context&
     Session(net::io_context& ioc, tcp::socket&& socket, ChatServer& server);
+    virtual ~Session() = default; // Add virtual destructor for inheritance
 
     void run();
-    void send(std::shared_ptr<const std::string> ss);
+    virtual void send(std::shared_ptr<const std::string> ss); // Made virtual
     std::string get_id() const; // Added get_id() method
+    void set_nickname(const std::string& new_nickname);
+    std::string get_nickname() const;
 
 private:
     void on_accept(beast::error_code ec);
@@ -41,6 +44,7 @@ private:
     ChatServer& server_; // Reference to ChatServer for broadcasting
     std::vector<std::shared_ptr<const std::string>> write_queue_;
     std::string session_id_; // For identifying sessions
+    std::string nickname_; // For storing user's nickname
 
     // Strand to ensure sequential execution of handlers for this session
     net::strand<net::io_context::executor_type> strand_; // Reverted to io_context::executor_type
