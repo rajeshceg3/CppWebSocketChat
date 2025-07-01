@@ -39,11 +39,22 @@ std::string Session::generate_session_id() {
 Session::Session(net::io_context& ioc, tcp::socket&& socket, ChatServer& server)
     : ws_(std::move(socket)), server_(server), strand_(net::make_strand(ioc.get_executor())) { // Initialized with ioc
     session_id_ = generate_session_id();
-    std::cout << "Session created with ID: " << session_id_ << std::endl;
+    nickname_ = "User" + session_id_; // Initialize nickname
+    std::cout << "Session created with ID: " << session_id_ << " and Nickname: " << nickname_ << std::endl;
 }
 
 std::string Session::get_id() const {
     return session_id_;
+}
+
+void Session::set_nickname(const std::string& new_nickname) {
+    nickname_ = new_nickname;
+    // Optionally, log nickname changes or notify other systems/users.
+    std::cout << "Session " << session_id_ << " nickname changed to: " << nickname_ << std::endl;
+}
+
+std::string Session::get_nickname() const {
+    return nickname_;
 }
 
 void Session::run() {
@@ -86,17 +97,9 @@ void Session::on_accept(beast::error_code ec) {
     }
     std::cout << "Session " << session_id_ << " WebSocket handshake accepted." << std::endl;
 
-    // Send server_client_connected message
-    json::object connected_json_obj = {
-        {"type", "server_client_connected"},
-        {"payload", {
-            {"user_id", session_id_},
-            {"message", "A new user has connected."},
-            {"timestamp", Utils::getCurrentTimestampISO8601()}
-        }}
-    };
-    // Broadcast to ALL clients (including this one, so it knows its ID and connection is confirmed by server message)
-    server_.broadcast(json::serialize(connected_json_obj));
+    // The server_client_connected message is now sent by ChatServer::on_client_connect,
+    // which has access to the session's nickname.
+    // server_.on_client_connect(shared_from_this()); // This is already called from ChatServer::on_accept
 
     // Start reading messages
     do_read();
@@ -182,17 +185,49 @@ void Session::on_read(beast::error_code ec, std::size_t bytes_transferred) {
         }
         std::string text_content = payload_obj.at("text").as_string().c_str();
 
+        // server_.broadcast is handled by ChatServer, which will now fetch nickname
+        // Construct the message payload without nickname, ChatServer::broadcast will add it.
         json::object broadcast_json_obj = {
             {"type", "server_broadcast_message"},
             {"payload", {
-                {"user_id", session_id_},
+                {"user_id", session_id_}, // User ID is still essential
+                // Nickname will be added by ChatServer::broadcast
                 {"text", text_content},
                 {"timestamp", Utils::getCurrentTimestampISO8601()}
             }}
         };
-        std::string broadcast_msg_str = json::serialize(broadcast_json_obj);
-        std::cout << "Session " << session_id_ << " Broadcasting: " << broadcast_msg_str << std::endl;
-        server_.broadcast(broadcast_msg_str); // Broadcast to all, including sender
+        // Pass the shared_ptr<Session> to broadcast
+        server_.broadcast(json::serialize(broadcast_json_obj), shared_from_this());
+
+
+    } else if (msg_type == "client_set_nickname") {
+        if (!msg_obj.contains("payload") || !msg_obj.at("payload").is_object()) {
+            std::cerr << "Session " << session_id_ << " 'client_set_nickname' has no/invalid 'payload': " << received_msg_str << std::endl;
+            do_read();
+            return;
+        }
+        const json::object& payload_obj = msg_obj.at("payload").as_object();
+        if (!payload_obj.contains("nickname") || !payload_obj.at("nickname").is_string()) {
+            std::cerr << "Session " << session_id_ << " 'client_set_nickname' payload has no/invalid 'nickname': " << received_msg_str << std::endl;
+            do_read();
+            return;
+        }
+        std::string new_nickname = payload_obj.at("nickname").as_string().c_str();
+        set_nickname(new_nickname); // Update the nickname
+
+        // For now, don't broadcast nickname change to simplify.
+        // Later, might send a "server_nickname_changed" message.
+        // Example:
+        // json::object ack_msg = {
+        //     {"type", "server_nickname_ack"},
+        //     {"payload", {
+        //         {"user_id", session_id_},
+        //         {"nickname", nickname_},
+        //         {"message", "Nickname updated successfully."}
+        //     }}
+        // };
+        // send(std::make_shared<std::string>(json::serialize(ack_msg)));
+
 
     } else {
         std::cerr << "Session " << session_id_ << " Unknown message type: " << msg_type << std::endl;

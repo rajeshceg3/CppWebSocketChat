@@ -42,11 +42,12 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 enable_testing()
 
-# Example for future server tests (commented out)
-# add_executable(chat_server_tests tests/test_chat_server.cpp ${SERVER_SRC})
-# target_link_libraries(chat_server_tests PRIVATE gtest_main gmock Boost::system Boost::thread)
-# include(GoogleTest)
-# gtest_discover_tests(chat_server_tests)
+# Server tests
+add_executable(server_tests tests/test_server_functionality.cpp ${SERVER_SRC})
+target_include_directories(server_tests PRIVATE src) # Ensure tests can find server headers
+target_link_libraries(server_tests PRIVATE gtest_main gmock Boost::system Boost::thread Boost::json)
+include(GoogleTest)
+gtest_discover_tests(server_tests)
 
 # Remove old client test executable if it's no longer relevant or causes issues
 if(TARGET chat_client_tests)

@@ -63,3 +63,136 @@ body {
   overflow-y: auto; /* Ensure scrolling within its container */
   min-height: 300px; /* Example minimum height */
 }
+
+/* Nickname Prompt Styles */
+.App-nickname-prompt {
+  justify-content: flex-start; /* Align to top since header is smaller */
+}
+
+.App-nickname-prompt .App-header {
+  margin-bottom: 30px; /* More space after the header */
+}
+
+.App-nickname-prompt .App-main {
+  padding: 20px;
+  max-width: 400px; /* Smaller width for the prompt */
+}
+
+.nickname-input-container {
+  display: flex;
+  flex-direction: column; /* Stack input and button vertically */
+  align-items: center; /* Center items horizontally */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.nickname-input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Space between input and button */
+  width: 80%; /* Take up most of the container width */
+  box-sizing: border-box;
+}
+
+.nickname-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nickname-button:hover {
+  background-color: #0056b3;
+}
+
+/* Display user's nickname in the main App header */
+.App-my-nickname {
+  font-size: 0.9em;
+  color: #f0f0f0;
+  margin-top: 5px;
+}
+
+/* MessageList improvements */
+.message-list {
+  list-style-type: none;
+  padding: 10px 20px; /* More horizontal padding */
+  max-height: 500px; /* Increased max height */
+  overflow-y: auto;
+  border-bottom: 1px solid #ccc;
+  flex-grow: 1; /* Allow it to take available space */
+  display: flex;
+  flex-direction: column;
+}
+
+.message-list-empty {
+  padding: 20px;
+  font-style: italic;
+  color: #777;
+  text-align: center;
+}
+
+.message-item {
+  margin-bottom: 12px; /* More space between messages */
+  padding: 8px 12px;
+  border: 1px solid #eee;
+  border-radius: 8px; /* More rounded corners */
+  background-color: #f9f9f9; /* Default message background */
+  word-wrap: break-word; /* Ensure long words break */
+  display: flex; /* For potential future use like aligning avatars */
+  flex-direction: column; /* Stack content vertically */
+}
+
+.message-item.my-message {
+  background-color: #dcf8c6; /* Light green for own messages */
+  border-color: #c5eab4;
+  align-self: flex-end; /* Push to the right */
+  max-width: 70%; /* Don't take full width */
+}
+.message-item:not(.my-message) {
+  align-self: flex-start; /* Push to the left */
+  max-width: 70%; /* Don't take full width */
+}
+
+
+.message-type { /* Style for displaying message type (optional) */
+  font-weight: bold;
+  font-size: 0.8em;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.message-content {
+  font-size: 0.95em;
+  color: #333;
+}
+
+.message-content strong { /* Nickname styling */
+  color: #007bff; /* Blue for sender nickname */
+}
+
+.message-content em { /* Styling for connect/disconnect messages */
+  color: #666;
+  font-style: italic;
+}
+
+.timestamp {
+  font-size: 0.75em;
+  color: #999;
+  margin-left: 8px;
+}
+
+/* MessageInput disabled state */
+.MessageInput-container input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+.MessageInput-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
