@@ -20,6 +20,19 @@ function App() {
     }
   }, [myNickname]);
 
+  // Effect to update myNickname if a server_user_nickname_changed message is for the current user
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.type === "server_user_nickname_changed" &&
+          lastMessage.payload &&
+          lastMessage.payload.old_nickname === myNickname) {
+        // Ensure the local state myNickname is updated if the change was for this user
+        setMyNickname(lastMessage.payload.new_nickname);
+      }
+    }
+  }, [messages, myNickname]); // Ensure all dependencies are listed
+
   const handleSetNickname = () => {
     if (tempNickname.trim()) {
       setMyNickname(tempNickname.trim());
