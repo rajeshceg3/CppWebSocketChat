@@ -213,21 +213,21 @@ void Session::on_read(beast::error_code ec, std::size_t bytes_transferred) {
             return;
         }
         std::string new_nickname = payload_obj.at("nickname").as_string().c_str();
+
+        std::string old_nickname_val = get_nickname(); // Capture old nickname
         set_nickname(new_nickname); // Update the nickname
 
-        // For now, don't broadcast nickname change to simplify.
-        // Later, might send a "server_nickname_changed" message.
-        // Example:
-        // json::object ack_msg = {
-        //     {"type", "server_nickname_ack"},
-        //     {"payload", {
-        //         {"user_id", session_id_},
-        //         {"nickname", nickname_},
-        //         {"message", "Nickname updated successfully."}
-        //     }}
-        // };
-        // send(std::make_shared<std::string>(json::serialize(ack_msg)));
-
+        // Construct and broadcast the nickname change notification
+        json::object nickname_changed_payload = {
+            {"type", "server_user_nickname_changed"},
+            {"payload", {
+                {"user_id", session_id_},
+                {"old_nickname", old_nickname_val},
+                {"new_nickname", new_nickname}, // This is the same as get_nickname() now
+                {"timestamp", Utils::getCurrentTimestampISO8601()}
+            }}
+        };
+        server_.broadcast(json::serialize(nickname_changed_payload)); // Use system-wide broadcast
 
     } else {
         std::cerr << "Session " << session_id_ << " Unknown message type: " << msg_type << std::endl;

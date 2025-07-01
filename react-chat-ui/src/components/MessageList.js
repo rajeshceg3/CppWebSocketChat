@@ -32,6 +32,13 @@ const MessageList = ({ messages, myNickname }) => { // Added myNickname prop
             User {payload.nickname || payload.user_id || 'Someone'} has disconnected. {payload.user_id && payload.nickname ? `(ID: ${payload.user_id})` : ''} <span className="timestamp">{timestamp}</span>
           </em>
         );
+      case 'server_user_nickname_changed':
+        return (
+          <em>
+            User '{payload.old_nickname || payload.user_id}' is now known as '{payload.new_nickname}'.
+            <span className="timestamp">{timestamp}</span>
+          </em>
+        );
       case 'raw_data': // Example for system messages from useWebSocket hook (if any)
          return `System: ${payload.text || JSON.stringify(payload)} ${timestamp}`;
       default:
