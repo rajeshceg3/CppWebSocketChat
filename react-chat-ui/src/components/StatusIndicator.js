@@ -2,33 +2,33 @@ import React from 'react';
 
 const StatusIndicator = ({ readyState }) => {
   let statusText = 'Unknown';
-  let statusColor = 'grey';
+  let statusClassName = 'status-unknown';
 
   switch (readyState) {
     case WebSocket.CONNECTING:
       statusText = 'Connecting...';
-      statusColor = 'orange';
+      statusClassName = 'status-connecting';
       break;
     case WebSocket.OPEN:
       statusText = 'Connected';
-      statusColor = 'green';
+      statusClassName = 'status-connected';
       break;
     case WebSocket.CLOSING:
       statusText = 'Closing...';
-      statusColor = 'orange';
+      statusClassName = 'status-closing';
       break;
     case WebSocket.CLOSED:
       statusText = 'Disconnected';
-      statusColor = 'red';
+      statusClassName = 'status-disconnected';
       break;
     default:
       statusText = 'Unknown State';
-      statusColor = 'grey';
+      statusClassName = 'status-unknown';
   }
 
   return (
-    <div style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>
-      Status: <span style={{ color: statusColor, fontWeight: 'bold' }}>{statusText}</span>
+    <div className="StatusIndicator-container">
+      Status: <span className={`StatusIndicator-text ${statusClassName}`}>{statusText}</span>
     </div>
   );
 };
