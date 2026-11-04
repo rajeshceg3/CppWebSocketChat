@@ -18,7 +18,7 @@ set(SERVER_SRC
 )
 
 # Boost components
-find_package(Boost 1.71.0 REQUIRED COMPONENTS system thread json) # Added json
+find_package(Boost 1.75.0 REQUIRED COMPONENTS system thread json) # Added json
 
 add_executable(websocket-chat-server ${MAIN_SRC} ${SERVER_SRC}) # Renamed executable
 # Link Boost libraries. For header-only parts of Boost like Asio and Beast,
@@ -61,9 +61,13 @@ endif()
 # include(GoogleTest)
 # gtest_discover_tests(chat_client_tests)
 
+option(COPY_COMPILE_COMMANDS_TO_SOURCE "Copy generated compile database into source" OFF)
+if(COPY_COMPILE_COMMANDS_TO_SOURCE)
 add_custom_target(
 	copy-compile-commands ALL
 	${CMAKE_COMMAND} -E copy_if_different
 	${CMAKE_BINARY_DIR}/compile_commands.json
 	${CMAKE_CURRENT_LIST_DIR}
 )
+
+endif()

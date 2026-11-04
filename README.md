@@ -143,3 +143,9 @@ Contributions are welcome! Please open an issue to discuss significant changes o
 
 ## License
 This project is currently unlicensed. (Consider adding an OSI approved license like MIT if you plan to share it widely).
+
+## Purpose-fit verification
+
+Follow [.cursor/skills/verify-websocket-chat/SKILL.md](.cursor/skills/verify-websocket-chat/SKILL.md) for a real native-server/two-browser production-UI proof. Boost.JSON needs Boost1.75 or newer. REACT_APP_WS_URL can select an isolated backend during the UI build. Compile database copying into the source is now opt-in with COPY_COMPILE_COMMANDS_TO_SOURCE; normal out-of-tree builds do not rewrite tracked source files.
+
+The bounded proof uses one server thread. Existing multiple-thread mode, authentication/TLS/origin/rate/message limits, hosted operation, old clients and dependency security remain unverified. Do not deploy this as a secured public chat service on the basis of the local proof.

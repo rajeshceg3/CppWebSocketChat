@@ -309,3 +309,10 @@ body {
 .status-unknown {
   color: #9B9A9C; /* Secondary Text */
 }
+
+/* Keep the existing palette while making chat text readable. */
+.App-header, .MessageInput-button, .nickname-button { background-color: #24616b; }
+.StatusIndicator-text.status-connected { color: #216037; }
+.message-item strong { color: #24616b; }
+.message-item em, .timestamp { color: #56545c; }
+.message-list { overflow-y: auto; }

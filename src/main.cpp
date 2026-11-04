@@ -14,13 +14,18 @@ using tcp = net::ip::tcp;
 int main(int argc, char* argv[]) {
     try {
         // Check command line arguments.
-        if (argc < 2) {
+        if (argc < 2 || argc > 3) {
             std::cerr << "Usage: websocket-chat-server <port> [<num_threads>]\n";
             return 1;
         }
 
         auto const address = net::ip::make_address("0.0.0.0");
-        auto const port = static_cast<unsigned short>(std::atoi(argv[1]));
+        std::size_t consumed = 0;
+        const std::string port_text(argv[1]);
+        const auto port_number = std::stoul(port_text, &consumed);
+        if (consumed != port_text.size() || port_text.empty() || port_text[0] == '-' || port_number < 1 || port_number > 65535)
+            throw std::invalid_argument("Port must be 1-65535");
+        auto const port = static_cast<unsigned short>(port_number);
         int num_threads = 1;
         if (argc == 3) {
             num_threads = std::max<int>(1, std::atoi(argv[2]));
