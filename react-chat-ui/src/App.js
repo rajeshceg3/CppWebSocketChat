@@ -6,12 +6,18 @@ import MessageList from './components/MessageList';
 import MessageInput from './components/MessageInput';
 
 // Configuration for WebSocket URL
-const WEBSOCKET_URL = 'ws://127.0.0.1:8080'; // Or use environment variable
+const WEBSOCKET_URL = process.env.REACT_APP_WS_URL || 'ws://127.0.0.1:8080'; // Or use environment variable
 
 function App() {
   const { messages, readyState, error, sendMessage } = useWebSocket(WEBSOCKET_URL);
   const [myNickname, setMyNickname] = useState(localStorage.getItem('chatNickname') || '');
   const [tempNickname, setTempNickname] = useState('');
+
+  useEffect(() => {
+    if (readyState === WebSocket.OPEN && myNickname) {
+      sendMessage({ type: "client_set_nickname", payload: { nickname: myNickname } });
+    }
+  }, [readyState, myNickname, sendMessage]);
 
   // Effect to save nickname to localStorage whenever it changes
   useEffect(() => {
@@ -36,11 +42,6 @@ function App() {
   const handleSetNickname = () => {
     if (tempNickname.trim()) {
       setMyNickname(tempNickname.trim());
-      const nicknameMessage = {
-        type: "client_set_nickname",
-        payload: { nickname: tempNickname.trim() }
-      };
-      sendMessage(nicknameMessage);
       // tempNickname input will be hidden by the conditional rendering on myNickname
     }
   };
@@ -106,7 +107,7 @@ function App() {
         <StatusIndicator readyState={readyState} />
         {error && <div style={{ color: 'red', padding: '10px' }}>Error: {error.message}</div>}
         <MessageList messages={messages} myNickname={myNickname} />
-        <MessageInput onSendMessage={handleSendMessage} disabled={!myNickname} />
+        <MessageInput onSendMessage={handleSendMessage} disabled={!myNickname || readyState !== WebSocket.OPEN} />
       </main>
     </div>
   );

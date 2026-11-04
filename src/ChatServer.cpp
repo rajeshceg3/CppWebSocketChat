@@ -14,29 +14,25 @@ ChatServer::ChatServer(net::io_context& ioc, const tcp::endpoint& endpoint)
     // Open the acceptor
     acceptor_.open(endpoint.protocol(), ec);
     if (ec) {
-        std::cerr << "Failed to open acceptor: " << ec.message() << std::endl;
-        return;
+        throw boost::system::system_error(ec, "Failed to open acceptor");
     }
 
     // Allow address reuse
     acceptor_.set_option(net::socket_base::reuse_address(true), ec);
     if (ec) {
-        std::cerr << "Failed to set socket options: " << ec.message() << std::endl;
-        return;
+        throw boost::system::system_error(ec, "Failed to set socket options");
     }
 
     // Bind to the server address
     acceptor_.bind(endpoint, ec);
     if (ec) {
-        std::cerr << "Failed to bind to address: " << ec.message() << std::endl;
-        return;
+        throw boost::system::system_error(ec, "Failed to bind to address");
     }
 
     // Start listening for connections
     acceptor_.listen(net::socket_base::max_listen_connections, ec);
     if (ec) {
-        std::cerr << "Failed to listen on acceptor: " << ec.message() << std::endl;
-        return;
+        throw boost::system::system_error(ec, "Failed to listen on acceptor");
     }
 }
 
@@ -61,7 +57,6 @@ void ChatServer::on_accept(beast::error_code ec, tcp::socket socket) {
     } else {
         // Create the session and run it, passing ioc_
         auto new_session = std::make_shared<Session>(ioc_, std::move(socket), *this);
-        on_client_connect(new_session); // Add to set
         new_session->run(); // Start the session
     }
 

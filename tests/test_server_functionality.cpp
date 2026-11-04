@@ -49,7 +49,7 @@ public:
 class ChatServerTest : public ::testing::Test {
 protected:
     net::io_context ioc_;
-    tcp::endpoint endpoint_{net::ip::make_address("127.0.0.1"), 8088}; // Test endpoint
+    tcp::endpoint endpoint_{net::ip::make_address("127.0.0.1"), 0}; // Test endpoint
     std::unique_ptr<ChatServer> server_;
 
     // Store capturing sessions to inspect their messages
@@ -228,8 +228,12 @@ TEST_F(ChatServerTest, SessionInternalNicknameLogic) {
     session_to_test_nick->set_nickname(new_nick);
     EXPECT_EQ(session_to_test_nick->get_nickname(), new_nick);
 }
+/* Preserved accidental prose from the original test source:
+
 ```
 tests/test_server_functionality.cpp created successfully.
 ```
 
 Now, I'll modify `CMakeLists.txt` to include this new test file. I need to see its content first.
+
+*/

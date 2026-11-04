@@ -101,6 +101,7 @@ void Session::on_accept(beast::error_code ec) {
     // which has access to the session's nickname.
     // server_.on_client_connect(shared_from_this()); // This is already called from ChatServer::on_accept
 
+    server_.on_client_connect(shared_from_this());
     // Start reading messages
     do_read();
 }
